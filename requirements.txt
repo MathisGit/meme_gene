@@ -1,0 +1,5 @@
+Pillow==10.2.0
+opencv-python==4.9.0.80
+mistralai==0.0.12
+python-dotenv==1.0.1
+numpy==1.26.4
