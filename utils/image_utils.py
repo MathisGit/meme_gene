@@ -2,7 +2,7 @@ from PIL import Image
 import os
 from typing import Tuple
 
-def ensure_meme_directory(meme_dir: str = "data/memes") -> None:
+def ensure_meme_directory(meme_dir: str) -> None:
     """Vérifie que le répertoire des mèmes existe."""
     os.makedirs(meme_dir, exist_ok=True)
     
@@ -12,7 +12,7 @@ def save_meme(image: Image.Image, filename: str, output_dir: str = "output") -> 
     
     Args:
         image (Image.Image): L'image du mème
-        filename (str): Le nom du fichier
+        filename (str): Le nom du fichier (sans extension)
         output_dir (str): Le répertoire de sortie
         
     Returns:

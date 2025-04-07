@@ -1,32 +1,17 @@
 {
-    "drake_approve": {
-        "id": "drake_approve",
-        "description": "Drake qui approuve une chose et rejette une autre",
-        "format": "two_panels",
-        "tags": ["approval", "rejection", "comparison"]
-    },
-    "distracted_boyfriend": {
-        "id": "distracted_boyfriend",
-        "description": "Le petit ami distrait regardant une autre fille",
-        "format": "three_panels",
-        "tags": ["distraction", "temptation", "relationships"]
-    },
     "change_my_mind": {
         "id": "change_my_mind",
         "description": "Steven Crowder assis avec un panneau 'Change My Mind'",
-        "format": "top_bottom",
-        "tags": ["debate", "opinion", "challenge"]
+        "format": "single_caption"
     },
     "one_does_not_simply": {
         "id": "one_does_not_simply",
-        "description": "Boromir disant 'One does not simply...'",
-        "format": "top_bottom",
-        "tags": ["difficulty", "impossibility", "lord_of_the_rings"]
+        "description": "Boromir de Lord of the Rings disant 'One does not simply...'",
+        "format": "single_caption"
     },
-    "two_buttons": {
-        "id": "two_buttons",
-        "description": "Personnage stressé devant deux boutons",
-        "format": "top_bottom",
-        "tags": ["decision", "dilemma", "choice"]
+    "success_kid": {
+        "id": "success_kid",
+        "description": "Le garçon qui lève le poing avec un sourire satisfait",
+        "format": "single_caption"
     }
 } 

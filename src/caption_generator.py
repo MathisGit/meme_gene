@@ -30,10 +30,18 @@ Exemple de format pour three_panels:
 Exemple de format pour top_bottom:
 {
     "texts": ["Texte du haut", "Texte du bas"]
+}""",
+            "single_caption": """Génère EXACTEMENT une seule caption courte et drôle qui sera placée en bas de l'image.
+La caption DOIT être en français et dans le style des mèmes.
+Pour le mème 'One does not simply', commence toujours par 'On ne peut pas simplement...'
+
+Exemple de format pour single_caption:
+{
+    "texts": ["On ne peut pas simplement coder sans café"]
 }"""
         }
         
-        return f"""Tu es un expert en création de mèmes. Génère des textes drôles et pertinents pour le mème suivant.
+        return f"""Tu es un expert en création de mèmes francophones. Génère des textes drôles et pertinents pour le mème suivant.
 
 Prompt utilisateur: "{prompt}"
 
@@ -44,10 +52,12 @@ Informations sur le mème:
 {format_instructions[meme_info['format']]}
 
 IMPORTANT:
+- La réponse DOIT être en français
 - Génère EXACTEMENT le nombre de textes requis pour le format
 - Les textes doivent être courts et percutants
 - Utilise le format JSON exact comme dans les exemples
 - Ne génère que les textes, pas d'explications ou de commentaires
+- Pour le mème 'One does not simply', commence TOUJOURS par 'On ne peut pas simplement...'
 """
         
     def generate_captions(self, prompt: str, meme_info: Dict) -> List[str]:
