@@ -1,77 +1,101 @@
+import base64
 import json
 import os
-import re
-from typing import Dict, List
+from typing import Dict
 
-from PIL import Image
+from dotenv import load_dotenv
+from mistralai import Mistral
+
+load_dotenv()
 
 
-def get_image_format(image_path: str) -> str:
+def encode_image(image_path: str) -> str:
+    """Encode l'image en base64."""
+    try:
+        with open(image_path, "rb") as image_file:
+            return base64.b64encode(image_file.read()).decode("utf-8")
+    except Exception as e:
+        print(f"Erreur lors de l'encodage de l'image {image_path}: {str(e)}")
+        return None
+
+
+def get_image_analysis(image_path: str, client: Mistral) -> Dict:
     """
-    Détermine le format du mème basé sur l'analyse de l'image.
-    Retourne un des formats suivants : 'top_bottom', 'two_panels', 'three_panels'
+    Analyse l'image avec l'API Mistral pour obtenir une description et des tags.
     """
-    img = Image.open(image_path)
-    width, height = img.size
+    base64_image = encode_image(image_path)
+    if not base64_image:
+        return None
 
-    # Analyse basée sur les ratios et la structure de l'image
-    ratio = width / height
+    messages = [
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": """Analyse cette image de mème et fournis les informations suivantes au format JSON:
+                    1. Une description détaillée de ce qui est représenté
+                    2. Le format du mème (top_bottom, two_panels, ou three_panels)
+                    3. Une liste de tags pertinents (max 5)
+                    
+                    Format de réponse attendu:
+                    {
+                        "description": "description détaillée",
+                        "format": "format du mème",
+                        "tags": ["tag1", "tag2", "tag3", "tag4", "tag5"]
+                    }""",
+                },
+                {
+                    "type": "image_url",
+                    "image_url": f"data:image/jpeg;base64,{base64_image}",
+                },
+            ],
+        }
+    ]
 
-    if ratio > 1.5:  # Image large
-        if "distracted" in image_path.lower():
-            return "three_panels"
-        elif "drake" in image_path.lower():
-            return "two_panels"
+    try:
+        response = client.chat.complete(model="pixtral-12b-2409", messages=messages)
+
+        # Extrait le JSON de la réponse
+        content = response.choices[0].message.content
+        # Trouve le premier { et le dernier }
+        start = content.find("{")
+        end = content.rfind("}") + 1
+        if start != -1 and end != -1:
+            json_str = content[start:end]
+            return json.loads(json_str)
         else:
-            return "top_bottom"
-    else:
-        return "top_bottom"
+            print(f"Impossible de parser la réponse JSON pour {image_path}")
+            return None
+
+    except Exception as e:
+        print(f"Erreur lors de l'analyse de l'image {image_path}: {str(e)}")
+        return None
 
 
-def generate_tags(image_path: str, description: str) -> List[str]:
+def create_meme_metadata(image_path: str, client: Mistral) -> Dict:
     """
-    Génère des tags pertinents basés sur le nom du fichier et la description.
-    """
-    tags = []
-
-    # Tags basés sur le nom du fichier
-    filename = os.path.basename(image_path).lower()
-    words = re.findall(r"\w+", filename)
-    tags.extend(words)
-
-    # Tags basés sur la description
-    desc_words = re.findall(r"\w+", description.lower())
-    tags.extend([w for w in desc_words if len(w) > 3])  # Évite les mots trop courts
-
-    # Tags communs pour les mèmes
-    common_tags = ["meme", "funny", "humor"]
-    tags.extend(common_tags)
-
-    # Supprime les doublons et retourne une liste unique
-    return list(set(tags))
-
-
-def create_meme_metadata(image_path: str) -> Dict:
-    """
-    Crée les métadonnées pour un mème à partir de son image.
+    Crée les métadonnées pour un mème à partir de son image en utilisant l'API Mistral.
     """
     filename = os.path.basename(image_path)
     meme_id = os.path.splitext(filename)[0]
 
-    # Génère une description basée sur le nom du fichier
-    description = filename.replace("_", " ").title()
-
-    # Détermine le format
-    format_type = get_image_format(image_path)
-
-    # Génère les tags
-    tags = generate_tags(image_path, description)
+    # Analyse l'image avec Mistral
+    analysis = get_image_analysis(image_path, client)
+    if not analysis:
+        # Fallback sur une description basique si l'analyse échoue
+        return {
+            "id": meme_id,
+            "description": filename.replace("_", " ").title(),
+            "format": "top_bottom",
+            "tags": ["meme", "funny", "humor"],
+        }
 
     return {
         "id": meme_id,
-        "description": description,
-        "format": format_type,
-        "tags": tags,
+        "description": analysis["description"],
+        "format": analysis["format"],
+        "tags": analysis["tags"],
     }
 
 
@@ -79,6 +103,14 @@ def update_memes_json():
     """
     Met à jour le fichier memes.json avec les nouvelles images trouvées.
     """
+    # Initialise le client Mistral
+    api_key = os.environ.get("MISTRAL_API_KEY")
+    if not api_key:
+        print("Erreur: MISTRAL_API_KEY non trouvée dans les variables d'environnement")
+        return
+
+    client = Mistral(api_key=api_key)
+
     # Charge le fichier memes.json existant
     memes_path = "data/memes.json"
     if os.path.exists(memes_path):
@@ -105,7 +137,7 @@ def update_memes_json():
             # Ne traite que les nouvelles images
             if meme_id not in memes:
                 try:
-                    metadata = create_meme_metadata(image_path)
+                    metadata = create_meme_metadata(image_path, client)
                     memes[meme_id] = metadata
                     print(f"Ajouté: {meme_id}")
                 except Exception as e:
