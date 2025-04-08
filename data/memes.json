@@ -38,6 +38,11 @@
         "id": "assis",
         "description": "Utilise ce meme quand un tu as fait une dinguerie à ton collègue, ou que t'as mis dans la merde toute l'équipe et que ton collègue d'en face veut te démolir",
         "format": "single_caption"
+    },
+    "charmeur": {
+        "id": "charmeur",
+        "description": "Utilise ce meme quand un tu as fait de la merde et que t'essayes de faire le charmeur pour camoufler ta connerie",
+        "format": "single_caption"
     }
     
     
