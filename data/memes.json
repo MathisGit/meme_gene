@@ -18,5 +18,10 @@
         "id": "suspicious",
         "description": "Utilise ce meme quand tu as un air suspicieux, que tu te fais entourlouper, que le mec te dit n'importe quoi, ou un plan foireux",
         "format": "single_caption"
+    },
+    "presque": {
+        "id": "presque",
+        "description": "Utilise ce meme quand tu es passé à deux doigts de quelquechose, que quelchose de très grave a failli arriver, que tu as failli réussir à quelquechose",
+        "format": "single_caption"
     }
 } 
