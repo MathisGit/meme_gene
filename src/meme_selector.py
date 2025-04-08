@@ -3,7 +3,7 @@ from typing import Dict, Tuple
 import json
 from dotenv import load_dotenv
 from mistralai import Mistral
-from caption_generator import CaptionGenerator
+from src.caption_generator import CaptionGenerator
 
 load_dotenv()
 

@@ -6,8 +6,8 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from utils.image_utils import ensure_meme_directory, save_meme
-from meme_selector import MemeSelector
-from caption_generator import CaptionGenerator
+from src.meme_selector import MemeSelector
+from src.caption_generator import CaptionGenerator
 
 class MemeFinalizer:
     def __init__(self):
