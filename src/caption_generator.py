@@ -32,16 +32,19 @@ Exemple de format pour top_bottom:
     "texts": ["Texte du haut", "Texte du bas"]
 }""",
             "single_caption": """Génère EXACTEMENT une seule caption courte et drôle qui sera placée en bas de l'image.
-La caption DOIT être en français et dans le style des mèmes.
-Pour le mème 'One does not simply', commence toujours par 'On ne peut pas simplement...'
+La caption DOIT :
+- Commencer par "Quand"
+- Être courte et percutante (max 6-7 mots)
+- Être en français
+- Être drôle et dans le style des mèmes
 
 Exemple de format pour single_caption:
 {
-    "texts": ["On ne peut pas simplement coder sans café"]
+    "texts": ["Quand tu push en prod le vendredi"]
 }"""
         }
         
-        return f"""Tu es un expert en création de mèmes francophones. Génère des textes drôles et pertinents pour le mème suivant.
+        return f"""Tu es un expert en création de mèmes francophones. Génère une caption courte et drôle pour le mème suivant.
 
 Prompt utilisateur: "{prompt}"
 
@@ -52,12 +55,12 @@ Informations sur le mème:
 {format_instructions[meme_info['format']]}
 
 IMPORTANT:
+- La caption DOIT commencer par "Quand"
+- La caption doit être TRÈS courte (max 6-7 mots)
 - La réponse DOIT être en français
-- Génère EXACTEMENT le nombre de textes requis pour le format
-- Les textes doivent être courts et percutants
-- Utilise le format JSON exact comme dans les exemples
-- Ne génère que les textes, pas d'explications ou de commentaires
-- Pour le mème 'One does not simply', commence TOUJOURS par 'On ne peut pas simplement...'
+- Utilise le format JSON exact comme dans l'exemple
+- Ne génère que la caption, pas d'explications
+- Sois percutant et drôle
 """
         
     def generate_captions(self, prompt: str, meme_info: Dict) -> List[str]:

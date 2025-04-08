@@ -1,17 +1,22 @@
 {
-    "change_my_mind": {
-        "id": "change_my_mind",
-        "description": "Steven Crowder assis avec un panneau 'Change My Mind'",
+    "bg": {
+        "id": "bg",
+        "description": "Utilise ce meme quand tu viens de faire un truc très stylé, comme un boss",
         "format": "single_caption"
     },
-    "one_does_not_simply": {
-        "id": "one_does_not_simply",
-        "description": "Boromir de Lord of the Rings disant 'One does not simply...'",
+    "tired": {
+        "id": "tired",
+        "description": "Utilise ce meme quand tu es trop déglingué, rincé et mal coiffé",
         "format": "single_caption"
     },
-    "success_kid": {
-        "id": "success_kid",
-        "description": "Le garçon qui lève le poing avec un sourire satisfait",
+    "white": {
+        "id": "white",
+        "description": "Utilise ce meme quand tu as fait une grosse connerie, que tu cherches un salut car tu es cooked",
+        "format": "single_caption"
+    },
+    "suspicious": {
+        "id": "suspicious",
+        "description": "Utilise ce meme quand tu as un air suspicieux, que tu te fais entourlouper, que le mec te dit n'importe quoi, ou un plan foireux",
         "format": "single_caption"
     }
 } 
