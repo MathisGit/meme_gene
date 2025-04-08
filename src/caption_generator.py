@@ -8,71 +8,72 @@ load_dotenv()
 
 class CaptionGenerator:
     def __init__(self):
-        """Initialise le générateur de textes avec l'API Mistral."""
+        """Initialize the caption generator with Mistral API."""
         self.api_key = os.environ["MISTRAL_API_KEY"]
         self.client = Mistral(api_key=self.api_key)
         self.model = "mistral-large-latest"
         
     def _create_caption_prompt(self, prompt: str, meme_info: Dict) -> str:
-        """Crée le prompt pour la génération des textes."""
+        """Create the prompt for caption generation."""
         format_instructions = {
-            "two_panels": """Génère EXACTEMENT deux textes courts et drôles qui contrastent bien.
-Exemple de format pour two_panels:
+            "two_panels": """Generate EXACTLY two short and funny texts that contrast well.
+Example format for two_panels:
 {
-    "texts": ["Texte du premier panneau", "Texte du deuxième panneau"]
+    "texts": ["First panel text", "Second panel text"]
 }""",
-            "three_panels": """Génère EXACTEMENT trois textes courts qui racontent une histoire.
-Exemple de format pour three_panels:
+            "three_panels": """Generate EXACTLY three short texts that tell a story.
+Example format for three_panels:
 {
-    "texts": ["Texte du premier panneau", "Texte du deuxième panneau", "Texte du troisième panneau"]
+    "texts": ["First panel text", "Second panel text", "Third panel text"]
 }""",
-            "top_bottom": """Génère EXACTEMENT deux textes courts : un accrocheur en haut et une punchline en bas.
-Exemple de format pour top_bottom:
+            "top_bottom": """Generate EXACTLY two short texts: an attention-grabbing one at the top and a punchline at the bottom.
+Example format for top_bottom:
 {
-    "texts": ["Texte du haut", "Texte du bas"]
+    "texts": ["Top text", "Bottom text"]
 }""",
-            "single_caption": """Génère EXACTEMENT une seule caption courte et drôle qui sera placée en bas de l'image.
-La caption DOIT :
-- Commencer par "Quand"
-- Être courte et percutante (max 6-7 mots)
-- Être en français
-- Être drôle et dans le style des mèmes
+            "single_caption": """Generate EXACTLY one short and funny caption that will be placed at the bottom of the image.
+The caption MUST:
+- Start with "When"
+- Be short and impactful (max 6-7 words)
+- Be in English
+- Be funny and in meme style
+- Be a little bit tacky, creative and viral
 
-Exemple de format pour single_caption:
+Example format for single_caption:
 {
-    "texts": ["Quand tu push en prod le vendredi"]
+    "texts": ["When you push to prod on Friday"]
 }"""
         }
         
-        return f"""Tu es un expert en création de mèmes francophones. Génère une caption courte et drôle pour le mème suivant.
+        return f"""You are an expert in creating English memes. Generate a short and funny caption for the following meme.
 
-Prompt utilisateur: "{prompt}"
+User prompt: "{prompt}"
 
-Informations sur le mème:
+Meme information:
 - Description: {meme_info['description']}
 - Format: {meme_info['format']}
 
 {format_instructions[meme_info['format']]}
 
 IMPORTANT:
-- La caption DOIT commencer par "Quand"
-- La caption doit être TRÈS courte (max 6-7 mots)
-- La réponse DOIT être en français
-- Utilise le format JSON exact comme dans l'exemple
-- Ne génère que la caption, pas d'explications
-- Sois percutant et drôle
+- The caption MUST start with "When"
+- The caption must be VERY short (max 6-7 words)
+- The response MUST be in English
+- Use the exact JSON format as in the example
+- Generate only the caption, no explanations
+- Be impactful and funny
 """
         
     def generate_captions(self, prompt: str, meme_info: Dict) -> List[str]:
         """
-        Génère les textes pour un mème à partir d'un prompt.
+        Generate captions for a meme from a prompt.
         
         Args:
-            prompt (str): Le prompt décrivant la situation
-            meme_info (Dict): Les informations sur le mème sélectionné
+            prompt (str): The prompt describing the situation
+            meme_info (Dict): Information about the selected meme
             
         Returns:
-            List[str]: Les textes générés
+            List[str]: The generated captions
         """
         caption_prompt = self._create_caption_prompt(prompt, meme_info)
         
@@ -87,15 +88,15 @@ IMPORTANT:
             response_format={"type": "json_object"}
         )
         
-        # Parse la réponse JSON
+        # Parse JSON response
         result = json.loads(response.choices[0].message.content)
         return result["texts"]
     
 if __name__ == "__main__":
     generator = CaptionGenerator()
-    prompt = "quand tu pushes en prod un vendredi"
+    prompt = "when you push to prod on Friday"
     meme_info = {
-        "description": "Un développeur qui pousse du code en prod un vendredi",
+        "description": "A developer pushing code to prod on Friday",
         "format": "two_panels"
     }
     texts = generator.generate_captions(prompt, meme_info)

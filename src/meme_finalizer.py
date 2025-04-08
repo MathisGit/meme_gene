@@ -51,12 +51,13 @@ class MemeFinalizer:
         text_width = text_bbox[2] - text_bbox[0]
         text_height = text_bbox[3] - text_bbox[1]
         
-        # Centre le texte en bas avec une marge de 20 pixels (augmentée de 10 à 20)
+        # Centre le texte en bas avec une marge proportionnelle à la hauteur de l'image
+        margin = max(20, image.height // 15)  # Au moins 30px, ou plus pour les grandes images
         x = (image.width - text_width) // 2
-        y = image.height - text_height - 20
+        y = image.height - text_height - margin
         return x, y
             
-    def _calculate_optimal_font_size(self, image: Image.Image, text: str, max_width_ratio: float = 0.95, max_height_ratio: float = 0.25, start_size: int = 80) -> int:
+    def _calculate_optimal_font_size(self, image: Image.Image, text: str, max_width_ratio: float = 0.95, max_height_ratio: float = 0.3) -> int:
         """
         Calcule la taille de police optimale pour que le texte rentre dans la zone désirée.
         
@@ -65,14 +66,19 @@ class MemeFinalizer:
             text: Le texte à ajouter
             max_width_ratio: Ratio maximum de la largeur de l'image que le texte peut occuper
             max_height_ratio: Ratio maximum de la hauteur de l'image que le texte peut occuper
-            start_size: Taille de police initiale
             
         Returns:
             int: La taille de police optimale
         """
         max_width = int(image.width * max_width_ratio)
         max_height = int(image.height * max_height_ratio)
+        
+        # Calcul de la taille de départ en fonction de la taille de l'image
+        # Plus l'image est grande, plus on commence avec une grande taille
+        start_size = min(image.height // 6, image.width // 8)  # Taille proportionnelle à l'image
+        start_size = max(start_size, 40)  # Au moins 40px
         font_size = start_size
+        
         draw = ImageDraw.Draw(image)
         
         # Vérifie que le fichier de police existe
@@ -80,7 +86,7 @@ class MemeFinalizer:
             print("   Police non trouvée, utilisation de la police par défaut")
             return 40  # Taille par défaut
         
-        while font_size > 20:  # Taille minimum augmentée à 20px
+        while font_size > 20:  # Taille minimum de 20px
             try:
                 font = ImageFont.truetype(self.font_path, font_size)
                 text_bbox = draw.textbbox((0, 0), text, font=font)
@@ -105,7 +111,7 @@ class MemeFinalizer:
             print("   Calcul de la taille de police optimale...")
             if font_size is None:
                 font_size = self._calculate_optimal_font_size(image, text)
-            print(f"   Taille de police choisie: {font_size}")
+            print(f"   Taille de police choisie: {font_size}px")
             
             print("   Chargement de la police...")
             font = self._load_font(font_size)
@@ -114,11 +120,21 @@ class MemeFinalizer:
             # Position du texte
             x, y = self._get_text_position(image, text, font)
             
+            print("   Ajout de l'ombre...")
+            # Ajout d'une ombre portée
+            shadow_offset = max(2, font_size // 30)  # Offset proportionnel à la taille de police
+            shadow_color = (0, 0, 0, 180)  # Noir semi-transparent
+            for offset_x in range(shadow_offset, shadow_offset * 2):
+                for offset_y in range(shadow_offset, shadow_offset * 2):
+                    draw.text((x + offset_x, y + offset_y), text, font=font, fill=shadow_color)
+            
             print("   Ajout du contour noir...")
-            # Ajout d'un contour noir pour la lisibilité
-            for offset_x in [-2, 2]:
-                for offset_y in [-2, 2]:
-                    draw.text((x + offset_x, y + offset_y), text, font=font, fill="black")
+            # Ajout d'un contour noir plus épais pour la lisibilité
+            outline_size = max(2, font_size // 25)  # Contour proportionnel à la taille de police
+            for offset_x in range(-outline_size, outline_size + 1):
+                for offset_y in range(-outline_size, outline_size + 1):
+                    if abs(offset_x) + abs(offset_y) <= outline_size + 1:
+                        draw.text((x + offset_x, y + offset_y), text, font=font, fill="black")
             
             print("   Ajout du texte principal...")
             # Texte principal en blanc

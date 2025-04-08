@@ -16,7 +16,7 @@
     },
     "suspicious": {
         "id": "suspicious",
-        "description": "Utilise ce meme quand tu as un air suspicieux, que tu te fais entourlouper, que le mec te dit n'importe quoi, ou un plan foireux",
+        "description": "Utilise ce meme quand tu as un air suspicieux, que tu te fais entourlouper, que le mec te dit n'importe quoi, ou un plan foireux, qu'on te met un meeting trop tard, ou que tu as un truc à faire mais que tu ne veux pas le faire",
         "format": "single_caption"
     }
 } 
