@@ -18,5 +18,32 @@
         "id": "suspicious",
         "description": "Utilise ce meme quand tu as un air suspicieux, que tu te fais entourlouper, que le mec te dit n'importe quoi, ou un plan foireux, qu'on te met un meeting trop tard, ou que tu as un truc à faire mais que tu ne veux pas le faire",
         "format": "single_caption"
+    },
+    "presque": {
+        "id": "presque",
+        "description": "Utilise ce meme quand tu es passé à deux doigts de quelquechose, que quelchose de très grave a failli arriver, que tu as failli réussir à quelquechose",
+        "format": "single_caption"
+    },
+    "incompréhension": {
+        "id": "incompréhension",
+        "description": "Utilise ce meme quand tu ne comprends pas ce que la personne en face te raconte, ou que tu te rends compte en lui parlant que tu n'avais en fait rien compris à quelquechose, ou que tu comprends que lq personne en face de toi a fait n'importe quoi",
+        "format": "single_caption"
+    },
+    "like_a_boss": {
+        "id": "like_a_boss",
+        "description": "Utilise ce meme quand tu crois avoir avoir fait un truc très stylé mais en réalité tu as produit quelquechose de médiocre",
+        "format": "single_caption"
+    },
+    "assis": {
+        "id": "assis",
+        "description": "Utilise ce meme quand un tu as fait une dinguerie à ton collègue, ou que t'as mis dans la merde toute l'équipe et que ton collègue d'en face veut te démolir",
+        "format": "single_caption"
+    },
+    "charmeur": {
+        "id": "charmeur",
+        "description": "Utilise ce meme quand un tu as fait de la merde et que t'essayes de faire le charmeur pour camoufler ta connerie",
+        "format": "single_caption"
     }
+    
+    
 } 
