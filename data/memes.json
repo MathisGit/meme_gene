@@ -1,22 +1,12 @@
 {
-    "bg": {
-        "id": "bg",
-        "description": "Utilise ce meme quand tu viens de faire un truc très stylé, comme un boss",
-        "format": "single_caption"
-    },
-    "tired": {
-        "id": "tired",
+    "guillaume_tenebreux": {
+        "id": "guillaume_tenebreux",
         "description": "Utilise ce meme quand tu es trop déglingué, rincé et mal coiffé",
-        "format": "single_caption"
-    },
-    "white": {
-        "id": "white",
-        "description": "Utilise ce meme quand tu as fait une grosse connerie, que tu cherches un salut car tu es cooked",
         "format": "single_caption"
     },
     "suspicious": {
         "id": "suspicious",
-        "description": "Utilise ce meme quand tu as un air suspicieux, que tu te fais entourlouper, que le mec te dit n'importe quoi, ou un plan foireux, qu'on te met un meeting trop tard, ou que tu as un truc à faire mais que tu ne veux pas le faire",
+        "description": "Utilise ce meme quand tu as un air suspicieux, que tu te fais entourlouper, que le mec te dit n'importe quoi, ou un plan foireux",
         "format": "single_caption"
     },
     "presque": {
@@ -44,6 +34,4 @@
         "description": "Utilise ce meme quand un tu as fait de la merde et que t'essayes de faire le charmeur pour camoufler ta connerie",
         "format": "single_caption"
     }
-    
-    
-} 
+}
